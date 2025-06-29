@@ -176,6 +176,14 @@ The ring-based LWE distribution $A_{s,\chi}$ samples a pair
 where a(x) is uniformly chosen at random from the quotient ring Rq and $e(X)$ is sampled from the distribution $\chi$. Then the search ring-LWE problem asks us to find the secret $s(X)$ given any independent samples from $A_{s,\chi}$.
 \end{definition}
 
+
+\textbf{Rotation}. Any element of $R$ (resp., $R_q$) can be expressed as a polynomial of degree $n - 1$ with coefficients in $\mathbb{Z}$ (resp., $\mathbb{Z}_q$). For any element $f(x) = f_0 + f_1x + \ldots + f_{n-1}x^{n-1}$ of $R$ (resp., $R_q$), we write its coefficient vector in $\mathbb{Z}^n$ (resp., $\mathbb{Z}^n_q$) as $\mathbf{f} = (f_0, f_1, \ldots , f_{n-1})$. We define the rotation operation for $f$ as  
+\begin{align*}
+    \mathrm{rot}(\mathbf{f}) = (-f_{n-1}, f_0, f_1, \ldots , f_{n-2}).
+\end{align*}
+This is just the coefficient vector of the element $xf (x)$ in $R$. Similarly, for each $1 \leq i \leq  n$, the $i$ times rotated vector $\mathrm{rot}^i(\mathbf{f})$ is the coefficient vector of $x^if(x)$ in $R$. 
+In particular, we have $\mathrm{rot}^n(\mathbf{f}) = -f$ since $x^n = -1$ in $R$.
+
 \section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
 \subsection{计算方法}
 
