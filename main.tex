@@ -325,7 +325,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 由于e和s都为选取比较短的多项式,$(e^*,s^*)$是较短向量,这样问题就转换为格$\lambda$中的CVP问题.
 
 \subsubsection{从CVP到SVP问题的转化}
-通过Kannan 's embedding\supercite[]{kannan1987},可以将问题转化为SVP:
+通过\textit{Kannan 's embedding}\supercite[]{kannan1987},可以将问题转化为$2 \cdot n+1 \times 2 \cdot n+1$维下的SVP问题求解:
 
 \begin{align}
 	(k_0,k_1,...k_{63},s_0,s_1,...s_{63},1)
@@ -348,9 +348,12 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 	(e_0,e_1,...e_{63},s_0,s_1,...s_{63},1)
 \end{align}
 
-对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
+通过\textit{Extension of Kannan’s Embedding}\cite{albrecht2018},可以将问题转化为$(d+n+k)×(d+n+k)$维度下的SVP问题
 
-又或者使用Sieving求解SVP问题,在使用\textit{3-sieve (triple\_sieve)}时,
+\subsubsection{SVP问题的求解}
+使用LLL算法\cite{ajtai1998}对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
+
+使用Sieving求解SVP问题,在使用\textit{3-sieve (triple\_sieve)}时,
 时间复杂度为$2^{0.396n+o(n)}$,其中$n=2N+1$,$N$为RLWE问题的维度,对于$n=129$的问题,
 \textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}.
 
