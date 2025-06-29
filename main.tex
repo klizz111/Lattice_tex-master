@@ -123,7 +123,8 @@
 \vspace{1em}
 
 大规模量子计算机的潜在威胁对传统公钥密码学的安全性构成了根本性挑战。为应对此挑战，后量子密码学（Post-Quantum Cryptography, PQC）应运而生，其核心在于构建基于量子计算下困难数学问题的密码体制，旨在替代当前广泛依赖的传统公钥密码学，实现对称密钥封装、数字签名等核心功能。
-在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203-111 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204-121 (Module-LWE-based Digital Signature - ML-DSA) 和 FIPS 205 (Stateless Hash-Based Digital Signature - SLH-DSA)。其中，FIPS 203 (Crystals-Kyber) 与 FIPS 204 (Crystals-Dilithium) 标准均奠基于模格学习带错误问题 (Module Learning With Errors, MLWE)，分别用于密钥封装和数字签名。
+在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204 (Module-LWE-based Digital Signature - ML-DSA) 。
+其中，FIPS 203 (Crystals-Kyber) 与 FIPS 204 (Crystals-Dilithium) 标准均奠基于模格学习带错误问题 (Module Learning With Errors, MLWE)，分别用于密钥封装和数字签名。
 这些基于MLWE的NIST标准化方案的理论安全性，本质上依赖于其底层MLWE问题（及其变种如环LWE, RLWE）的计算困难性。对LWE问题家族计算复杂度的深入理解及其高效求解算法的研究构成了评估此类方案安全性的理论基础。值得注意的是，在具体的MLWE/RLWE实例中，秘密向量与错误向量（通常建模为多项式）的采样分布是决定问题实际求解难度的关键参数。
 
 
