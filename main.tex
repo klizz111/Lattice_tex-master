@@ -5,10 +5,15 @@
 
 % 页面设置
 \usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
 
 % 数学公式
 \usepackage{amsmath,amssymb,amsthm}
 \newtheorem{definition}{定义} % 创建新的定理类型,命名为“定义”
+\usepackage{caption}
 
 % 图表支持
 \usepackage{graphicx}
@@ -96,7 +101,7 @@
 
 % 标题部分
 \begin{center}
-	{\heiti\fontsize{16pt}{24pt}\selectfont 赛题二}
+	{\heiti\fontsize{16pt}{24pt}\selectfont 赛题二:RLWE问题和MLWE问题的求解}
 \end{center}
 
 % 作者信息（四号仿宋）
@@ -142,6 +147,84 @@
 % 值得注意的是,在具体的MLWE/RLWE实例中,秘密向量与错误向量（通常建模为多项式）的采样分布是决定问题实际求解难度的关键参数.
 
 
+\begin{figure}[htbp]
+    \begin{center}
+    \begin{tikzpicture}[
+    node distance=2.5cm,  % Increased spacing between nodes
+    step/.style={
+        rectangle, 
+        draw=green!60!black,  % Updated color scheme
+        fill=green!10, 
+        thick,
+        line width=1pt,
+        minimum width=3.5cm,  % Slightly wider for English text
+        minimum height=1.8cm,
+        align=center,
+        rounded corners=5pt,
+        font=\sffamily\bfseries,  % Sans-serif bold font
+        text=blue!70!black
+    },
+    % arrow/.style={
+    %     -{Stealth[length=4mm, width=3mm]},
+    %     thick,
+    %     draw=red!80,
+    %     line width=1.2pt,
+    %     shorten >=2pt,
+    %     shorten <=2pt
+    % }
+    myarrow/.style={
+        -{Stealth[length=4mm, width=3mm]},
+        thick,
+        draw=red!80,
+        line width=1.2pt,
+        shorten >=2pt,
+        shorten <=2pt
+    },
+    description/.style={
+        font=\small\itshape,
+        text width=3cm,
+        align=center,
+        below=0.1cm
+    },
+    title/.style={
+        font=\Large\bfseries\sffamily,
+        text=blue!80!black,
+        align=center
+    }
+]
+
+
+
+% Define three process nodes
+\node[] (step1) {S-RLWE};
+\node[ right=of step1] (step2) {S-LWE};
+\node[ right=of step2] (step3) {CVP};
+\node[ right=of step3] (step4) {SVP};
+
+% Connect nodes with arrows
+% \draw[arrow] (step1) -- (step2);
+% \draw[arrow] (step2) -- (step3);
+% \draw[arrow] (step3) -- (step4);
+\draw[myarrow] (step1) -- node[description] {Rection to LWE} (step2);
+\draw[myarrow] (step2) -- node[description] {Rection to CVP} (step3);
+\draw[myarrow] (step3) -- node[description] {Kannon Embedding} (step4);
+
+% Add description below each node
+% \node[below=0.3cm of step1, text width=3cm, align=center, font=\small] 
+%     {Collect raw data from sources};
+% \node[below=0.3cm of step2, text width=3cm, align=center, font=\small] 
+%     {Transform data using algorithms};
+% \node[below=0.3cm of step3, text width=3cm, align=center, font=\small] 
+%     {Generate final reports};
+
+
+
+\end{tikzpicture}
+    
+\end{center}
+    \caption{Flowchart.}
+    \label{fig:flowchart}
+\end{figure}
 
 % 在论文正文前,应简要阐述对赛题的分析、解题使用的主要方法和解题结果等内容.
 % 解题思路为将通过构造格将RLWE转化为CVP问题,
@@ -184,7 +267,7 @@ where a(x) is uniformly chosen at random from the quotient ring Rq and $e(X)$ is
 This is just the coefficient vector of the element $xf (x)$ in $R$. Similarly, for each $1 \leq i \leq  n$, the $i$ times rotated vector $\mathrm{rot}^i(\mathbf{f})$ is the coefficient vector of $x^if(x)$ in $R$. 
 In particular, we have $\mathrm{rot}^n(\mathbf{f}) = -f$ since $x^n = -1$ in $R$.
 
-\section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
+\section[求解环R中主理想(a(X))=Rq的概率]{求解环R中主理想$(a(X))=R_q$的概率}
 \subsection{计算方法}
 
 给定环 $R_q = \mathbb{Z}_q[X]/(X^n + 1)$,其中 $n = 256$,$q = 3329$（$q$ 为质数）.需要计算在 $R_q$ 中均匀随机选取元素 $a(X)$ 时,主理想 $(a(X))$ 等于整个环 $R_q$ 的概率 $p$.
@@ -325,7 +408,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 由于e和s都为选取比较短的多项式,$(e^*,s^*)$是较短向量,这样问题就转换为格$\lambda$中的CVP问题.
 
 \subsubsection{从CVP到SVP问题的转化}
-通过\textit{Kannan 's embedding}\supercite[]{kannan1987},可以将问题转化为$2 \cdot n+1 \times 2 \cdot n+1$维下的SVP问题求解:
+通过\textit{Kannan 's embedding}\supercite[]{kannan1987},可以将问题转化为$(2 \cdot n+1) $维下的SVP问题求解:
 
 \begin{align}
 	(k_0,k_1,...k_{63},s_0,s_1,...s_{63},1)
@@ -348,20 +431,41 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 	(e_0,e_1,...e_{63},s_0,s_1,...s_{63},1)
 \end{align}
 
-通过\textit{Extension of Kannan’s Embedding}\cite{albrecht2018},可以将问题转化为$(d+n+k)×(d+n+k)$维度下的SVP问题
+通过\textit{Extension of Kannan’s Embedding}\cite{albrecht2018},可以将问题转化为$(n^2+n+k)$维度下的SVP问题,其中,d为,k为扩展参数,k=1时为原始的\textit{Kannan 's Embedding}:
 
-\subsubsection{SVP问题的求解}
-使用LLL算法\cite{ajtai1998}对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
+\begin{align}
+\begin{matrix}
+qI_d & 0 & 0 & 0 & \cdots & 0 \\
+-\tilde{A} & I_n & 0 & 0 & \cdots & 0 \\
+\tilde{t} & 0 & \eta & 0 & \cdots & 0 \\
+\text{rot}(\tilde{t}) & 0 & 0 & \eta & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+\text{rot}^{k-1}(\tilde{t}) & 0 & 0 & 0 & \cdots & \eta
+\end{matrix}
+\end{align}
 
-使用Sieving求解SVP问题,在使用\textit{3-sieve (triple\_sieve)}时,
-时间复杂度为$2^{0.396n+o(n)}$,其中$n=2N+1$,$N$为RLWE问题的维度,对于$n=129$的问题,
-\textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}.
+\subsubsection{SVP问题的求解与时间复杂度分析}
+
+使用\textit{LLL}算法\cite{ajtai1998}对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度如下,其中B为格基中最长最长向量的模长\cite{adleman1981}.
+\begin{align}
+n^6 (logB)^3
+\end{align}
+
+使用\textit{BKZ}算法求解SVP问题时，时间复杂度为:
+\begin{align}
+O\left(n^{c \cdot \beta} \cdot \text{poly}(\log n)\right)
+\end{align}
+
+使用Sieving求解SVP问题,在这里使用\textit{G6K}\cite{cryptoeprint:2019/089}作为Solver,使用\textit{3-sieve (triple\_sieve)}时,
+时间复杂度如下,其中$N=2n+1$,$n$为RLWE问题的维度.
+\begin{align}
+2^{0.396N+o(N)}
+\end{align}
 
 
 \section{解题结果}
 
-\subsection{题目(1)}
-
+\subsection{题目(2.1)}
 
 s = (1, -2, 0, 0, 1, 0, -1, 1, 1, -1, 1, 2, 1, 1,
 -1, -1, 0, 1, 0, -1, -1, 0, 0, 2, 1, -1, 0, -1, 0, 2, 0, 1,
@@ -377,6 +481,18 @@ e = (-1, 1, 0, -1, 1, 0, -1, 0, -1, -1, 0, 1, -1, -1, -2, -2, -1, -1, 0, 0, -1, 
 -1, 1, 1, -1, -1, 1, 1, 0, 1, 0, -1, 0, -1)
 
 e.norm=7.999999999999999
+
+\subsection{题目(2.3）}
+
+s = [-1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 0, 1, 1, -1, 1, 0, 1, -2, 0, -1, 0, 0, -1, 0, 1, 1, -2, 0, 0, -2, 1, 1, 1, -1, 1, -1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0, 1, 1, -1, -1, -1, 1, -1, 1, -1, 0, 0, 0, 0, -1, 0, 0, -1, -1, 0, 1, 0, -1, 0, 2, 1, -2, -2, -1, 0, 1, 0, 1, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, -2, 0, -2, -2, 0]
+
+s.norm: 9.38083151964686
+
+\hspace*{\fill}
+
+e = [584, -651, 906, -986, 1613, 1166, 1300, 925, 155, 770, -1054, -1570, 912, 1026, 211, -1404, 1242, 227, -778, -357, -1600, 998, -1428, -745, -120, -992, 313, -962, 989, 516, 1312, 32, -322, 979, -216, 929, -821, -1589, 794, -59, 872, -1232, -322, -666, -912, -269, 1395, -1024, 748, -665, -1663, -1492, -749, -390, -1465, -187, 526, -655, -99, -1212, -243, -1085, -290, -1579, -39, -1557, -220, 638, -1413, -1507, -1618, 1265, -752, 74, 264, 1512, -1043, 341, 981, -312, 1284, -270, 1552, -290, -1425, -1005, -1120, -264, -1310, -546, -264, 1421, -1525, -1283, -233, -680]
+
+e.norm: 9579.47122757827
 
 \section{结论}
 
