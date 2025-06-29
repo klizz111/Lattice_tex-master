@@ -1,0 +1,348 @@
+\documentclass[12pt,a4paper]{article}
+
+% 中文支持
+\usepackage[UTF8]{ctex}
+
+% 页面设置
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+
+% 数学公式
+\usepackage{amsmath,amssymb,amsthm}
+
+% 图表支持
+\usepackage{graphicx}
+\usepackage{float}
+
+% 其他必要包
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+% 引用包
+\usepackage[numbers,sort&compress,super]{natbib}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newcommand{\supercite}[2][]{\textsuperscript{\citep[#1]{#2}}}
+
+% 页眉页脚设置
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+% 设置页眉高度
+\setlength{\headheight}{13.5pt}
+
+% 设置页眉页脚样式
+\pagestyle{fancy}
+\fancyhf{} % 清空所有页眉页脚
+
+% 定义页眉页脚文字格式：小五号字体(9pt)，浅灰色，带下划线
+\newcommand{\headerfootertext}{\fontsize{9pt}{13.5pt}\selectfont\color{gray}\underline{第十届（2025年）全国高校密码数学挑战赛参赛论文}}
+
+% 设置页眉
+\fancyhead[C]{\headerfootertext}
+
+% 设置页脚
+\fancyfoot[C]{\headerfootertext}
+
+% 去掉页脚下方的横线
+\renewcommand{\footrulewidth}{0pt}
+
+% 设置参考文献样式
+\bibliographystyle{ieeetr}
+
+% 字体设置 - 使用ctex的字体命令
+% \setCJKfamilyfont{fs}{FangSong}  % 仿宋
+\newcommand{\fs}{\CJKfamily{fs}}
+
+% 1.5倍行距
+\onehalfspacing
+
+% 标题格式设置
+% 一级标题：三号黑体，顶格
+\titleformat{\section}
+{\heiti\fontsize{16pt}{24pt}\selectfont}
+{\chinese{section}、}
+{0em}
+{}
+
+% 二级标题：小三黑体，缩进2格
+\titleformat{\subsection}
+{\heiti\fontsize{15pt}{22.5pt}\selectfont}
+{\hspace{2em}\arabic{subsection}.}
+{0.5em}
+{}
+
+% 三级标题：小三黑体，缩进2格
+\titleformat{\subsubsection}
+{\heiti\fontsize{15pt}{22.5pt}\selectfont}
+{\hspace{2em}\arabic{subsection}.\arabic{subsubsection}}
+{0.5em}
+{}
+
+% 设置标题与正文之间的间距
+% \titlespacing*{\subsection}{0pt}{12pt}{6pt}
+% \titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+
+% 公式编号格式 (x.y)
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% 正文字体：四号宋体
+\renewcommand{\normalsize}{\fontsize{12pt}{18pt}\selectfont}
+
+\begin{document}
+
+% 标题部分
+\begin{center}
+	{\heiti\fontsize{16pt}{24pt}\selectfont 赛题二}
+\end{center}
+
+% 作者信息（四号仿宋）
+\begin{center}
+	{\fs\fontsize{12pt}{18pt}\selectfont 作者1 作者2 作者3 … 老师1（指导老师）}
+\end{center}
+
+% 学校和邮箱（小四宋体）
+\begin{center}
+	{\songti\fontsize{10.5pt}{15.75pt}\selectfont 暨南大学 \; 邮箱}
+\end{center}
+
+\vspace{1em}
+
+% 摘要部分
+\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 摘要：}{\songti\fontsize{12pt}{18pt}\selectfont 在此处输入摘要内容，约300~500字。应说明工作的目的、研究方法、结果和最终结论。要突出本论文的创造性成果或新的见解，语言力求精炼。为便于文献检索，应在本页下方另起一行注明本文的关键词（3~5个）。}
+
+\vspace{1em}
+
+\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 关键词：}{\songti\fontsize{12pt}{18pt}\selectfont 关键词1；关键词2；关键词3；关键词4；关键词5}
+
+\vspace{2em}
+
+% 引言
+{\centering\heiti\fontsize{16pt}{24pt}\selectfont 引言\par}
+\vspace{1em}
+
+大规模量子计算机的潜在威胁对传统公钥密码学的安全性构成了根本性挑战。为应对此挑战，后量子密码学（Post-Quantum Cryptography, PQC）应运而生，其核心在于构建基于量子计算下困难数学问题的密码体制，旨在替代当前广泛依赖的传统公钥密码学，实现对称密钥封装、数字签名等核心功能。
+在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203-111 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204-121 (Module-LWE-based Digital Signature - ML-DSA) 和 FIPS 205 (Stateless Hash-Based Digital Signature - SLH-DSA)。其中，FIPS 203 (Crystals-Kyber) 与 FIPS 204 (Crystals-Dilithium) 标准均奠基于模格学习带错误问题 (Module Learning With Errors, MLWE)，分别用于密钥封装和数字签名。
+这些基于MLWE的NIST标准化方案的理论安全性，本质上依赖于其底层MLWE问题（及其变种如环LWE, RLWE）的计算困难性。对LWE问题家族计算复杂度的深入理解及其高效求解算法的研究构成了评估此类方案安全性的理论基础。值得注意的是，在具体的MLWE/RLWE实例中，秘密向量与错误向量（通常建模为多项式）的采样分布是决定问题实际求解难度的关键参数。
+
+
+在论文正文前，应简要阐述对赛题的分析、解题使用的主要方法和解题结果等内容。
+解题思路为将通过构造格将RLWE转化为CVP问题，
+再通过Kannan embedding将问题转化为SVP问题后使用Seiving求解。
+
+% 正文开始
+\section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
+
+\subsection{计算方法}
+
+给定环 $R_q = \mathbb{Z}_q[X]/(X^n + 1)$，其中 $n = 256$，$q = 3329$（$q$ 为质数）。需要计算在 $R_q$ 中均匀随机选取元素 $a(X)$ 时，主理想 $(a(X))$ 等于整个环 $R_q$ 的概率 $p$。
+
+主理想 $(a(X)) = R_q$ 当且仅当 $a(X)$ 是 $R_q$ 中的单位，即 $a(X)$ 在环中可逆。
+
+$R_q = \mathbb{Z}_q[X]/(X^n + 1)$，其中 $\mathbb{Z}_q$ 是有限域（因为 $q$ 是质数）。
+
+元素 $a(X)$ 在 $R_q$ 中可逆当且仅当在多项式环 $\mathbb{Z}_q[X]$ 中，$\gcd(a(X), X^n + 1) = 1$。
+这是因为在商环 $\mathbb{Z}_q[X]/(f(X))$ 中，元素可逆的条件是与模多项式互质。
+
+设 $f(X) = X^n + 1 = X^{256} + 1$。
+
+$X^{512} - 1 = (X^{256} - 1)(X^{256} + 1)$，
+且 $X^{512} - 1 = \prod_{d \mid 512} \Phi_d(X)$，其中 $\Phi_d(X)$ 是分圆多项式。
+
+$X^{256} + 1 = \Phi_{512}(X)$，因为 $512 = 2^9$ 是 $n \times 2 = 256 \times 2 = 512$。
+
+$\Phi_{512}(X)$ 的次数为 $\phi(512) = 512 \times (1 - 1/2) = 256$，其中 $\phi$ 是欧拉函数。
+
+在有限域 $\mathbb{Z}_q$ 上，分圆多项式 $\Phi_m(X)$ 的不可约因子次数等于 $q$ 模 $m$ 的乘法阶（当 $\gcd(q, m) = 1$ 时）。
+
+这里 $m = 512$，$q = 3329$，且 $\gcd(q, 512) = 1$（因为 $q$ 是奇质数）。
+
+计算 $q \mod 512$: $q = 3329 \equiv 257 \pmod{512}$（因为 $3329 - 6 \times 512 = 3329 - 3072 = 257$）。
+
+计算 $q$ 模 512 的乘法阶：最小 $d$ 使得 $q^d \equiv 1 \pmod{512}$。
+
+$q \equiv 257 \equiv 1 + 2^8 \pmod{512}$。
+
+$q^2 = 257^2 = 66049 \equiv 1 \pmod{512}$（因为 $512 \times 129 = 66048$，$66049 - 66048 = 1$）。
+
+$q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
+
+因此，$\Phi_{512}(X)$ 在 $\mathbb{Z}_q$ 上分解为 $\phi(512) / \text{ord}_q(512) = 256 / 2 = 128$ 个互异的不可约因子，每个因子次数为 2。
+
+即 $f(X) = X^{256} + 1 = p_1(X) p_2(X) \cdots p_{128}(X)$，其中每个 $p_i(X)$ 是 $\mathbb{Z}_q$ 上的首一不可约二次多项式。
+
+因此，概率为：
+\begin{equation}
+	p = \left(1 - \frac{1}{q^2}\right)^{128}
+\end{equation}
+
+其中 $q = 3329$。
+
+% \subsubsection{具体实现步骤}
+
+\subsection{结果}
+
+\begin{equation}
+	p = \left(1 - \frac{1}{3329^2}\right)^{128}
+\end{equation}。
+
+
+\section{题目二}
+
+\subsection{题目(1)}
+
+\subsubsection{解题思路}
+
+已知$b(x)=a(x)s(x)+e(x)$，则多项式$t(x)=s_0+s_1 \cdot x + s_2 \cdot x + \ldots + s_63 \cdot x^{63}$可以表示为向量:
+
+\begin{align}
+	(s_0,s_1,s_2,...s_{63})
+\end{align}
+
+同理，$b(x)$和$e(x)$也可以表示为:
+
+\begin{align}
+	 & (b_0,b_1,b_2,...b_{63}) \\
+	 & (e_0,e_1,e_2,...e_{63})
+\end{align}
+
+将$b(x)=a(x)s(x)+e(x)$转化为矩阵乘法形式:
+
+\begin{equation}
+	(a_0,a_1,a_2,...a_{n-1})
+	\left(
+	\begin{smallmatrix}
+			b_0      & b_1      & b_2    & \cdots & b_{n-1} \\
+			-b_{n-1} & b_0      & b_1    & \cdots & b_{n-2} \\
+			-b_{n-2} & -b_{n-1} & b_0    & \cdots & b_{n-3} \\
+			\vdots   & \vdots   & \vdots & \ddots & \vdots  \\
+			-b_1     & -b_2     & -b_3   & \cdots & b_0     \\
+		\end{smallmatrix}
+	\right)
+	=
+	(c_0,c_1,c_2,...c_{n-1})
+\end{equation}
+
+再把多项式乘法改为$E=AS-B$形式
+将(2.4)中的矩阵构造格:
+
+\begin{align}
+	\lambda=
+	\left(
+	\begin{smallmatrix}
+		p        &          &        &        &         &   &   \\
+		& p        &        &        &         &   &   \\
+		&          & p      &        &         &   &   \\
+		&          &        & \ddots &         &   &   \\
+		&          &        &        & p       &   &   \\
+		a_0      & a_1      & a_2    & \cdots & a_{n-1} & 1 &   \\
+		-a_{n-1} & a_0      & a_1    & \cdots & a_{n-2} &   & 1 \\
+		-a_{n-2} & -a_{n-1} & a_0    & \cdots & a_{n-3} &   &   \\
+		\vdots   & \vdots   & \vdots & \ddots & \vdots  &   &   \\
+		-a_1     & -a_2     & -a_3   & \cdots & a_0     &   &   \\
+		b_0      & b_1      & b_2    & \cdots & b_{n-1} &   & 1
+	\end{smallmatrix}
+	\right)
+\end{align}
+
+格$\lambda$具有线性关系:
+
+\begin{align}
+	(k_0,k_1,...k_{63},s_0,s_1,...s_{63})
+	\left(
+	\begin{smallmatrix}
+			p\\
+			&p\\
+			&&p\\
+			&&&\cdots\\
+			&&&&p\\
+			a_0    &a_1    &a_2   &\cdots &a_{n-1}            &1\\
+			-a_{n-1}&a_0    &a_1   &\cdots &a_{n-2}       &&1\\
+			-a_{n-2}&-a_{n-1}&a_0   &\cdots &a_{n-3}  &&&1\\
+			\vdots &\vdots &\vdots&\ddots &\vdots             &&&&\cdots\\
+			-a_1    &-a_2    &-a_3   &\cdots &a_0 &&&&&1\\
+		\end{smallmatrix}
+	\right)
+	=
+	(e_0,e_1,...e_{63},s_0,s_1,...s_{63})
+\end{align}
+
+这样问题就转换为格$\lambda$中的CVP问题.
+再通过Kannan 's embedding\supercite[]{kannan1987}，将问题转化为SVP:
+
+\begin{align}
+	(k_0,k_1,...k_{63},s_0,s_1,...s_{63},1)
+	\left(
+	\begin{smallmatrix}
+			p\\
+			&p\\
+			&&\\
+			&&&\cdots\\
+			&&&&p\\
+			a_0    &a_1    &   &\cdots &a_{n-1}            &1\\
+			-a_{n-1}&a_0    &   &\cdots &a_{n-2}       &&\\
+			-a_{n-2}&-a_{n-1}&   &\cdots &a_{n-3}  &&\\
+			\vdots &\vdots &&\ddots &\vdots             &&\cdots\\
+			-a_1    &-a_2    &   &\cdots &a_0 &&&1\\
+			b_0    &b_1    &   &\cdots &b_{n-1}&&&&1\\
+		\end{smallmatrix}
+	\right)
+	=
+	(e_0,e_1,...e_{63},s_0,s_1,...s_{63},1)
+\end{align}
+
+对格进行格基约化，则约化后的第一行的[n,2n]项即为私密多项式，时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
+
+又或者使用Sieving求解SVP问题，在使用\textit{3-sieve (triple\_sieve)}时，
+时间复杂度为$2^{0.396n+o(n)}$，其中$n=2N+1$，$N$为RLWE问题的维度，对于$n=129$的问题，
+\textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}。
+
+\subsection{题目(2)}
+
+\subsubsection{解题思路}
+
+\subsection{题目(3)}
+
+\subsection{题目(4)}
+
+\subsection{题目(5)}
+
+\subsection{题目(6)}
+
+\subsection{题目(7)}
+
+\subsection{题目(8)}
+
+\section{解题结果}
+
+\subsection{题目(1)}
+
+
+s = (1, -2, 0, 0, 1, 0, -1, 1, 1, -1, 1, 2, 1, 1,
+-1, -1, 0, 1, 0, -1, -1, 0, 0, 2, 1, -1, 0, -1, 0, 2, 0, 1,
+1, -1, 0, 0, -1, 2, -1, -1, 0, -1, -1, 2, 1, -1, 1, -1, 2, 1, 1, 0,
+-1, 1, -1, 0, -2, 1, 0, 1, -2, 0, 0, 1)
+
+s.norm=8.54400374531753
+
+\hspace*{\fill}
+
+e = (-1, 1, 0, -1, 1, 0, -1, 0, -1, -1, 0, 1, -1, -1, -2, -2, -1, -1, 0, 0, -1, 1, 2, 2, -1,
+-1, 0, 0, -1, -1, 0, 1, -1, -1, -2, -1, 1, 0, -1, 0, 0, -1, 1, 0, 1, -2, 0, 1, 0, -1, -1,
+-1, 1, 1, -1, -1, 1, 1, 0, 1, 0, -1, 0, -1)
+
+e.norm=7.999999999999999
+
+\section{结论}
+
+总结论文的主要贡献和结论。
+
+\vspace{1em}
+
+% 导入.bib文件并生成参考文献列表
+{\songti\fontsize{12pt}{18pt}\selectfont
+	\bibliography{references}
+}
+
+\end{document}
