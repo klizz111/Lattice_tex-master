@@ -20,6 +20,7 @@
 \usepackage{float}
 % \usepackage{amsmath} % 加载amsmath宏包以支持数学公式
 \usepackage{xeCJK} % 加载xeCJK宏包以支持中文
+
 % 其他必要包
 \usepackage{enumerate}
 \usepackage{titlesec}
@@ -42,17 +43,21 @@
 \pagestyle{fancy}
 \fancyhf{} % 清空所有页眉页脚
 
-% 定义页眉页脚文字格式：小五号字体(9pt),浅灰色,带下划线
+% 定义页眉文字格式：小五号字体(9pt),浅灰色,带下划线
 \newcommand{\headerfootertext}{\fontsize{9pt}{13.5pt}\selectfont\color{gray}\underline{第十届（2025年）全国高校密码数学挑战赛参赛论文}}
+% 页脚
+% \newcommand{\footertext}{\fontsize{9pt}{13.5pt}\selectfont\color{gray}第十届（2025年）全国高校密码数学挑战赛参赛论文 \\ \color{black}\fontsize{9pt}{13.5pt}\selectfont\thepage}
 
 % 设置页眉
 \fancyhead[C]{\headerfootertext}
 
-% 设置页脚
-\fancyfoot[C]{\headerfootertext}
 
-% 去掉页脚下方的横线
-\renewcommand{\footrulewidth}{0pt}
+% 设置页脚
+\fancyfoot[C]{\color{black}\fontsize{12pt}{13.5pt}\selectfont\thepage}
+
+% 去掉页眉和页脚的横线
+\renewcommand{\headrulewidth}{0pt}  % 去掉页眉横线
+\renewcommand{\footrulewidth}{0pt}  % 去掉页脚横线
 
 % 设置参考文献样式
 \bibliographystyle{ieeetr}
@@ -205,9 +210,9 @@
 % \draw[arrow] (step1) -- (step2);
 % \draw[arrow] (step2) -- (step3);
 % \draw[arrow] (step3) -- (step4);
-\draw[myarrow] (step1) -- node[description] {Rection to LWE} (step2);
-\draw[myarrow] (step2) -- node[description] {Rection to CVP} (step3);
-\draw[myarrow] (step3) -- node[description] {Kannon Embedding} (step4);
+\draw[myarrow] (step1) -- node[description] {\rm{\textbf{Reduction to LWE}}} (step2);
+\draw[myarrow] (step2) -- node[description] {\rm{\textbf{Reduction to CVP}}} (step3);
+\draw[myarrow] (step3) -- node[description] {\rm{\textbf{Kannon Embedding}}} (step4);
 
 % Add description below each node
 % \node[below=0.3cm of step1, text width=3cm, align=center, font=\small] 
@@ -250,7 +255,7 @@ where $\mathbf{a}$ is uniformly chosen at random from $\mathbb{Z}_q^n$ and $e$ i
 \end{definition}
 
 \begin{definition}[Search Ring-LWE]
-Fix an element $s(x)$ in Rq that is called a “secret”. 
+Fix an element $s(x)$ in $R_q$ that is called a “secret”. 
 The ring-based LWE distribution $A_{s,\chi}$ samples a pair
 
 \begin{align*}
@@ -260,12 +265,72 @@ where a(x) is uniformly chosen at random from the quotient ring Rq and $e(X)$ is
 \end{definition}
 
 
-\textbf{Rotation}. Any element of $R$ (resp., $R_q$) can be expressed as a polynomial of degree $n - 1$ with coefficients in $\mathbb{Z}$ (resp., $\mathbb{Z}_q$). For any element $f(x) = f_0 + f_1x + \ldots + f_{n-1}x^{n-1}$ of $R$ (resp., $R_q$), we write its coefficient vector in $\mathbb{Z}^n$ (resp., $\mathbb{Z}^n_q$) as $\mathbf{f} = (f_0, f_1, \ldots , f_{n-1})$. We define the rotation operation for $f$ as  
+\textbf{Rotation.} Any element of $R$ (resp., $R_q$) can be expressed as a polynomial of degree $n - 1$ with coefficients in $\mathbb{Z}$ (resp., $\mathbb{Z}_q$). For any element $f(x) = f_0 + f_1x + \ldots + f_{n-1}x^{n-1}$ of $R$ (resp., $R_q$), we write its coefficient vector in $\mathbb{Z}^n$ (resp., $\mathbb{Z}^n_q$) as $\mathbf{f} = (f_0, f_1, \ldots , f_{n-1})$. We define the rotation operation for $f$ as  
 \begin{align*}
     \mathrm{rot}(\mathbf{f}) = (-f_{n-1}, f_0, f_1, \ldots , f_{n-2}).
 \end{align*}
 This is just the coefficient vector of the element $xf (x)$ in $R$. Similarly, for each $1 \leq i \leq  n$, the $i$ times rotated vector $\mathrm{rot}^i(\mathbf{f})$ is the coefficient vector of $x^if(x)$ in $R$. 
 In particular, we have $\mathrm{rot}^n(\mathbf{f}) = -f$ since $x^n = -1$ in $R$.
+
+
+\textbf{Reduction to LWE.}
+We take a ring-based LWE sample $(a(X), t(X))$ from the ring-based LWE distribution $A_{s,\chi}$. 
+For the coefficient vector $\mathbf{a} = (a_0, a_1, \ldots , a_{n-1})$ of $a(X)$, we set the $n \times n$ matrix
+\begin{align*}
+    \mathbf{A} = \left( \begin{matrix}
+        \ \mathbf{a} \\ \mathrm{rot}(\mathbf{a}) \\ \mathrm{rot}^2(\mathbf{a}) \\ \vdots \\ \mathrm{rot}^{n-1}(\mathbf{a}) \\
+    \end{matrix} \right) 
+    = 
+    \left( \begin{matrix}
+        a_0 &a_1& \cdots& a_{n-1}\\ 
+        -a_{n-1} &a_0& \cdots& a_{n-2}\\ 
+        -a_{n-2} &-a_{n-1}& \cdots& a_{n-3}\\ 
+        \vdots & \vdots & \ddots & \vdots\\ 
+        -a_1 &-a_2& \cdots& a_{0}\\
+    \end{matrix} \right)
+\end{align*}
+Then it holds $t \equiv sA + e \ (mod \ q)$, where $t$, $s$, $e$ are coefficient vectors of three polynomials $t(X)$, $s(X)$, $e(X)$, respectively. Indeed, the ring-based LWE relation $t(X) = s(X)a(X) + e(X)$ can be rewritten as
+\begin{align*}
+    \mathbf{t}\mathbf{X}^\top = t(X) &= s(X)a(X) + e(X) \\
+    &= \mathbf{s}\mathbf{X}^\top a(X) + \mathbf{e}\mathbf{X}^\top \\
+    &= \mathbf{s} \left( \begin{matrix}
+        \ \mathbf{a} \\ \mathrm{rot}(\mathbf{a}) \\ \mathrm{rot}^2(\mathbf{a}) \\ \vdots \\ \mathrm{rot}^{n-1}(\mathbf{a}) \\
+    \end{matrix} \right) \mathbf{X}^\top + \mathbf{e}\mathbf{X}^\top\\
+    & = (\mathbf{s}\mathbf{A} + \mathbf{e})\mathbf{X}^\top,
+\end{align*}
+where $\mathbf{X} = (1, X, X^2, \ldots , X^{n-1})$ gives a basis of the ring $R$ (resp., $R_q$) as a $\mathbb{Z}$-module (resp., $\mathbb{Z}_q$-module).
+In other words, a ring-based LWE sample generates an LWE instance $(\mathbf{A}, \mathbf{t})$ of size $n \times n$ with a secret $\mathbf{s}$ and an error $\mathbf{e}$.
+
+We consider the number of given samples from $A_{\mathbf{s},\chi}$ as an additional parameter of ring-based LWE. For an integer $m \geq 1$, we take $m$ independent ring-based LWE samples $(a_1(X), t_1(X)) ,\ldots, (a_m(X), t_m(X))$ from $A_{\mathbf{s},\chi}$. Let $\mathbf{A}_i$ denote the $n \times n$ matrix corresponding to $ai(x)$ like (2) for each $1 \leq i \leq m$. Then we have $m$ relations $\mathbf{t}_i \equiv \mathbf{s}\mathbf{A}_i + \mathbf{e}_i \ (mod \ q)$ for $1 \leq i \leq m$ from the previous paragraph. We can concatenate the $m$ relations to obtain an LWE instance of size $n \times d$ as
+
+\begin{align*}
+    (\mathbf{\hat{A}},\mathbf{\hat{t}}), \  \mathbf{\hat{t}} \equiv \mathbf{s}\mathbf{\hat{A}} + \mathbf{\hat{e}} \ (mod \ q),
+\end{align*}
+where $d = mn$, $\mathbf{\hat{A}} = (\mathbf{A}_1 | \ldots | \mathbf{A}_m)$, $\mathbf{\hat{t}} = (\mathbf{t}_1 | \ldots | \mathbf{t}_m)$ and $\mathbf{\hat{e}} = (\mathbf{e}_1 | \ldots | \mathbf{e}_m)$.
+We note that the system should be overdetermined, that is $m \geq 2$ (or $d > n$), to recover the secret $s(X)$ (or its coefficient vector $\mathbf{s}$) uniquely.
+
+\subsection{Lattices}
+A lattice is a discrete additive subgroup of the Euclidean space $\mathbb{R}^d$.
+Any lattice $L$ is spanned over $\mathbb{Z}$ by some linearly independent row vectors $\mathbf{b}_1,\ldots, \mathbf{b}_h$ in $\mathbb{R}^d$ as 
+\begin{align*}
+    L = \mathcal{L}(\mathbf{b}_1,\ldots, \mathbf{b}_h) = \left\{ \sum_{i=1}^h z_i \mathbf{b}_i \mid z_i \in \mathbb{Z} \right\}.
+\end{align*}
+The set of vectors $\mathbf{B}=(b_1,\cdots, b_h)$ is called a basis of $L$, and the (maximal) number of linearly independent vectors spanning $L$ is called the dimension (or rank) of $L$, denoted by $dim(L)$.
+In particular, a lattice $L$ in $\mathbb{R}^d$ is said to be full-rank when $dim(L) = d$.
+Let $\lambda_1(L)$ denote the first successive minimum of a lattice $L$ that is equal to the norm of a shortest non-zero vector in $L$.
+
+\textbf{q-ary Lattices.}
+A full-rank lattice $L$ in $Rd$ is said of q-ary for an odd prime $q$ if it satisfies $q \mathbb{Z}^d \subseteq L \subseteq \mathbb{Z}^d$. 
+Given an LWE instance, the construction of several $q$-ary lattices is shown in~\cite{micciancioLatticebasedCryptography2009} for reducing the instance to lattice problems such as SVP and CVP. We apply it to the LWE instance to obtain a $q$-ary lattice
+\begin{align*}
+    \Lambda_q(\mathbf{\hat{A}}) = \left\{ \mathbf{\hat{z}} \in \mathbb{Z}^d \mid \mathbf{\hat{z}} \equiv \mathbf{s}\mathbf{\hat{A}} \ (mod \ q), \exists \mathbf{s} \in \mathbb{Z}^n \right\}.
+\end{align*}
+We see that the rows of the $(d+n)\times d$ matrix $\left( \begin{matrix}
+\mathbf{\hat{A}} \\q\mathbf{I}_d
+\end{matrix}\right)$ spans the $q$-ary lattice, where $\mathbf{I}_d$ denotes the identity matrix of size $d$.
+
+\textbf{Reduction of LWE to CVP.} 
+We can naturally regard the LWE instance as a CVP instance over the $q$-ary lattice $\Lambda _q(\mathbf{\hat{A}})$ with a target vector $\mathbf{\hat{t}}$. In particular, the minimum distance between the target $\mathbf{\hat{t}}$ and the lattice vector $\mathbf{s}\mathbf{\hat{A}}$ in $\Lambda q(\mathbf{\hat{A}})$ is equal to the length of the error $\mathbf{\hat{e}}$ by if the error is sufficiently short. (In a general setting of LWE, the error is considerably shorter than the modulus prime $q$.) Technically speaking, this is an instance of the \emph{bounded distance decoding (BDD)} problem, a particular case of CVP with a promise about the minimum distance of a target from a lattice. 
 
 \section[求解环R中主理想(a(X))=Rq的概率]{求解环R中主理想$(a(X))=R_q$的概率}
 \subsection{计算方法}
@@ -408,7 +473,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 由于e和s都为选取比较短的多项式,$(e^*,s^*)$是较短向量,这样问题就转换为格$\lambda$中的CVP问题.
 
 \subsubsection{从CVP到SVP问题的转化}
-通过\textit{Kannan 's embedding}\supercite[]{kannan1987},可以将问题转化为$(2 \cdot n+1) $维下的SVP问题求解:
+通过\textit{Kannan 's embedding}\supercite[]{kannan1987},可以将问题转化为格$\mathbb{L}$中,$(2 \cdot n+1) $维下的SVP问题求解:
 
 \begin{align}
 	(k_0,k_1,...k_{63},s_0,s_1,...s_{63},1)
@@ -431,6 +496,25 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 	(e_0,e_1,...e_{63},s_0,s_1,...s_{63},1)
 \end{align}
 
+\begin{align}
+    \mathbb{L}=
+	\left(
+	\begin{smallmatrix}
+			p\\
+			&p\\
+			&&\\
+			&&&\cdots\\
+			&&&&p\\
+			a_0    &a_1    &   &\cdots &a_{n-1}            &1\\
+			-a_{n-1}&a_0    &   &\cdots &a_{n-2}       &&\\
+			-a_{n-2}&-a_{n-1}&   &\cdots &a_{n-3}  &&\\
+			\vdots &\vdots &&\ddots &\vdots             &&\cdots\\
+			-a_1    &-a_2    &   &\cdots &a_0 &&&1\\
+			b_0    &b_1    &   &\cdots &b_{n-1}&&&&1\\
+		\end{smallmatrix}
+	\right)
+\end{align}
+
 通过\textit{Extension of Kannan’s Embedding}\cite{albrecht2018},可以将问题转化为$(n^2+n+k)$维度下的SVP问题,其中,d为,k为扩展参数,k=1时为原始的\textit{Kannan 's Embedding}:
 
 \begin{align}
@@ -444,22 +528,24 @@ qI_d & 0 & 0 & 0 & \cdots & 0 \\
 \end{matrix}
 \end{align}
 
+对格$\mathbb{L}$进行SVP求解后,得到的最短向量即为$(e_0,e_1,...e_{63},s_0,s_1,...S_{63},1)$,y=由此即可得到私密多项式$s(x)$与错误多项式$e(x)$
+
 \subsubsection{SVP问题的求解与时间复杂度分析}
 
-使用\textit{LLL}算法\cite{ajtai1998}对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度如下,其中B为格基中最长最长向量的模长\cite{adleman1981}.
+使用\textit{LLL}算法\cite{lenstraFactoringPolynomialsRational1982}对格$\mathcal{L}$进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度如下,其中B为格基中最长最长向量的模长\cite{adleman1981}.
 \begin{align}
-n^6 (logB)^3
+n^6 (logB)^3.
 \end{align}
 
 使用\textit{BKZ}算法求解SVP问题时，时间复杂度为:
 \begin{align}
-O\left(n^{c \cdot \beta} \cdot \text{poly}(\log n)\right)
+O\left(n^{c \cdot \beta} \cdot \text{poly}(\log n)\right).
 \end{align}
 
 使用Sieving求解SVP问题,在这里使用\textit{G6K}\cite{cryptoeprint:2019/089}作为Solver,使用\textit{3-sieve (triple\_sieve)}时,
 时间复杂度如下,其中$N=2n+1$,$n$为RLWE问题的维度.
 \begin{align}
-2^{0.396N+o(N)}
+2^{0.396N+o(N)}.
 \end{align}
 
 
@@ -467,10 +553,10 @@ O\left(n^{c \cdot \beta} \cdot \text{poly}(\log n)\right)
 
 \subsection{题目(2.1)}
 
-s = (1, -2, 0, 0, 1, 0, -1, 1, 1, -1, 1, 2, 1, 1,
+s = [1, -2, 0, 0, 1, 0, -1, 1, 1, -1, 1, 2, 1, 1,
 -1, -1, 0, 1, 0, -1, -1, 0, 0, 2, 1, -1, 0, -1, 0, 2, 0, 1,
 1, -1, 0, 0, -1, 2, -1, -1, 0, -1, -1, 2, 1, -1, 1, -1, 2, 1, 1, 0,
--1, 1, -1, 0, -2, 1, 0, 1, -2, 0, 0, 1)
+-1, 1, -1, 0, -2, 1, 0, 1, -2, 0, 0, 1]
 
 s.norm=8.54400374531753
 
@@ -482,17 +568,27 @@ e = (-1, 1, 0, -1, 1, 0, -1, 0, -1, -1, 0, 1, -1, -1, -2, -2, -1, -1, 0, 0, -1, 
 
 e.norm=7.999999999999999
 
+\subsection{题目(2.2)}
+
+s = [1, 0, 4, -1, 0, 2, -1, 0, 4, 1, 0, -3, 1, 1, 1, -1, 0, 0, 5, -1, -1, 1, -1, -3, 1, -1, -1, 1, -5, 0, -5, 0, 0, -2, 0, 2, -1, 0, 1, 2, -2, 3, -5, 2, -1, 1, 0, 0, -3, 1, -2, -1, -3, -3, -1, 0, -2, 2, 3, -2, 1, -3, -4, -2]
+
+s.norm = 16.9705627484771
+
+e = [1, 1, -1, 0, -1, -2, 1, 2, 1, 2, 1, 3, 2, -1, 2, -1, 0, 0, 4, 0, -1, -1, 0, -1, 1, 0, 0, -3, 0, -4, -1, 0, 5, -1, 2, 0, 0, 0, 2, -2, 2, -2, 0, 0, 2, 1, 0, 5, 1, -1, 2, -2, 1, 2, 3, -1, 0, -1, -3, 0, 1, 2, -1, -1]
+
+e.norm = 14.2126704035519
+
 \subsection{题目(2.3）}
 
 s = [-1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 0, 1, 1, -1, 1, 0, 1, -2, 0, -1, 0, 0, -1, 0, 1, 1, -2, 0, 0, -2, 1, 1, 1, -1, 1, -1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0, 1, 1, -1, -1, -1, 1, -1, 1, -1, 0, 0, 0, 0, -1, 0, 0, -1, -1, 0, 1, 0, -1, 0, 2, 1, -2, -2, -1, 0, 1, 0, 1, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, -2, 0, -2, -2, 0]
 
-s.norm: 9.38083151964686
+s.norm = 9.38083151964686
 
 \hspace*{\fill}
 
-e = [584, -651, 906, -986, 1613, 1166, 1300, 925, 155, 770, -1054, -1570, 912, 1026, 211, -1404, 1242, 227, -778, -357, -1600, 998, -1428, -745, -120, -992, 313, -962, 989, 516, 1312, 32, -322, 979, -216, 929, -821, -1589, 794, -59, 872, -1232, -322, -666, -912, -269, 1395, -1024, 748, -665, -1663, -1492, -749, -390, -1465, -187, 526, -655, -99, -1212, -243, -1085, -290, -1579, -39, -1557, -220, 638, -1413, -1507, -1618, 1265, -752, 74, 264, 1512, -1043, 341, 981, -312, 1284, -270, 1552, -290, -1425, -1005, -1120, -264, -1310, -546, -264, 1421, -1525, -1283, -233, -680]
+e = [-1, 0, 1, 0, 0, 1, -1, -1, 0, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -2, 0, -1, -1, 1, -2, 0, 0, -1, 0, 0, -1, 0, 2, -1, 1, -2, 0, 0, 1, -1, 1, 0, 0, 2, 0, 1, -1, 0, 1, -1, 1, 1, 1, -1, 0, -1, 0, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0, -1, 0, 0, 0, -2, -2, 1, -1, -1, 0, -2, 0, 0, -2, 0, 0, -1, 2, 0, 0, 0, 0, 0, 1, 2, -1, 0, 1, 1]
 
-e.norm: 9579.47122757827
+e.norm = 9.27361849549571
 
 \section{结论}
 
