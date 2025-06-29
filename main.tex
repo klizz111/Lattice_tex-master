@@ -124,13 +124,20 @@
 % 摘要部分
 
 \noindent{\heiti\fontsize{12pt}{18pt}\selectfont 摘要：}{\songti\fontsize{12pt}{18pt}\selectfont 
-在此处输入摘要内容,约300~500字.应说明工作的目的、研究方法、结果和最终结论.要突出本论文的创造性成果或新的见解,语言力求精炼.为便于文献检索,应在本页下方另起一行注明本文的关键词（3~5个）.
+随着量子计算技术的快速发展,传统公钥密码体制面临着前所未有的安全威胁.
+基于格的密码学作为抗量子密码的重要分支,其安全性依赖于环学习带错误（RLWE）和模学习带错误（MLWE）等数学难题的计算复杂性.
+本文针对NIST后量子密码标准化进程中的核件问题,深入研究了RLWE和MLWE问题的求解方法与安全性分析.
+首先,我们分析了环R中主理想$(a(X))=R_q$的概率,通过分圆多项式理论计算得出该概率为$(1-\frac{1}{q^2})^{128}$.
+其次,提出了一套完整的RLWE问题求解框架：将RLWE问题转化为标准LWE问题,进而约化为最近向量问题（CVP）,
+最后通过Kannan嵌入技术转换为最短向量问题（SVP）进行求解.实验结果表明,
+该方法能够成功恢复维度为64和96的RLWE实例中的秘密多项式和错误多项式.
+本研究为评估基于格的后量子密码方案的实际安全强度提供了重要的理论基础和实用工具,
+对NIST标准化方案的安全性评估具有重要意义.
 }
-
 
 \vspace{1em}
 
-\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 关键词：}{\songti\fontsize{12pt}{18pt}\selectfont 关键词1；关键词2；关键词3；关键词4；关键词5}
+\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 关键词：}{\songti\fontsize{12pt}{18pt}\selectfont 后量子密码学；环学习带错误；模学习带错误；格基约化；最短向量问题}
 
 \vspace{2em}
 
@@ -537,7 +544,7 @@ qI_d & 0 & 0 & 0 & \cdots & 0 \\
 n^6 (logB)^3.
 \end{align}
 
-使用\textit{BKZ}算法求解SVP问题时，时间复杂度为:
+使用\textit{BKZ}算法求解SVP问题时,时间复杂度为:
 \begin{align}
 O\left(n^{c \cdot \beta} \cdot \text{poly}(\log n)\right).
 \end{align}
