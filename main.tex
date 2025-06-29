@@ -37,7 +37,7 @@
 \pagestyle{fancy}
 \fancyhf{} % 清空所有页眉页脚
 
-% 定义页眉页脚文字格式：小五号字体(9pt)，浅灰色，带下划线
+% 定义页眉页脚文字格式：小五号字体(9pt),浅灰色,带下划线
 \newcommand{\headerfootertext}{\fontsize{9pt}{13.5pt}\selectfont\color{gray}\underline{第十届（2025年）全国高校密码数学挑战赛参赛论文}}
 
 % 设置页眉
@@ -60,21 +60,21 @@
 \onehalfspacing
 
 % 标题格式设置
-% 一级标题：三号黑体，顶格
+% 一级标题：三号黑体,顶格
 \titleformat{\section}
 {\heiti\fontsize{16pt}{24pt}\selectfont}
 {\chinese{section}、}
 {0em}
 {}
 
-% 二级标题：小三黑体，缩进2格
+% 二级标题：小三黑体,缩进2格
 \titleformat{\subsection}
 {\heiti\fontsize{15pt}{22.5pt}\selectfont}
 {\hspace{2em}\arabic{subsection}.}
 {0.5em}
 {}
 
-% 三级标题：小三黑体，缩进2格
+% 三级标题：小三黑体,缩进2格
 \titleformat{\subsubsection}
 {\heiti\fontsize{15pt}{22.5pt}\selectfont}
 {\hspace{2em}\arabic{subsection}.\arabic{subsubsection}}
@@ -112,9 +112,11 @@
 \vspace{1em}
 
 % 摘要部分
+
 \noindent{\heiti\fontsize{12pt}{18pt}\selectfont 摘要：}{\songti\fontsize{12pt}{18pt}\selectfont 
 在此处输入摘要内容，约300~500字。应说明工作的目的、研究方法、结果和最终结论。要突出本论文的创造性成果或新的见解，语言力求精炼。为便于文献检索，应在本页下方另起一行注明本文的关键词（3~5个）。
 }
+
 
 \vspace{1em}
 
@@ -125,6 +127,7 @@
 % 引言
 {\centering\heiti\fontsize{16pt}{24pt}\selectfont 引言\par}
 \vspace{1em}
+
 
 大规模量子计算机的潜在威胁对传统公钥密码学的安全性构成了根本性挑战。为应对此挑战，后量子密码学（Post-Quantum Cryptography, PQC）应运而生，其核心在于构建基于量子计算下困难数学问题的密码体制，旨在替代当前广泛依赖的传统公钥密码学，实现对称密钥封装、数字签名等核心功能。
 在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203-111 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204-121 (Module-LWE-based Digital Signature - ML-DSA) 和 FIPS 205 (Stateless Hash-Based Digital Signature - SLH-DSA)。
@@ -143,6 +146,7 @@
 % 在论文正文前，应简要阐述对赛题的分析、解题使用的主要方法和解题结果等内容。
 % 解题思路为将通过构造格将RLWE转化为CVP问题，
 % 再通过Kannan embedding将问题转化为SVP问题后使用Seiving求解。
+
 
 % 正文开始
 
@@ -175,48 +179,50 @@ where a(x) is uniformly chosen at random from the quotient ring Rq and $e(X)$ is
 \section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
 \subsection{计算方法}
 
-给定环 $R_q = \mathbb{Z}_q[X]/(X^n + 1)$，其中 $n = 256$，$q = 3329$（$q$ 为质数）。需要计算在 $R_q$ 中均匀随机选取元素 $a(X)$ 时，主理想 $(a(X))$ 等于整个环 $R_q$ 的概率 $p$。
+给定环 $R_q = \mathbb{Z}_q[X]/(X^n + 1)$,其中 $n = 256$,$q = 3329$（$q$ 为质数）.需要计算在 $R_q$ 中均匀随机选取元素 $a(X)$ 时,主理想 $(a(X))$ 等于整个环 $R_q$ 的概率 $p$.
 
-主理想 $(a(X)) = R_q$ 当且仅当 $a(X)$ 是 $R_q$ 中的单位，即 $a(X)$ 在环中可逆。
+主理想 $(a(X)) = R_q$ 当且仅当 $a(X)$ 是 $R_q$ 中的单位,即 $a(X)$ 在环中可逆.
 
-$R_q = \mathbb{Z}_q[X]/(X^n + 1)$，其中 $\mathbb{Z}_q$ 是有限域（因为 $q$ 是质数）。
+$R_q = \mathbb{Z}_q[X]/(X^n + 1)$,其中 $\mathbb{Z}_q$ 是有限域（因为 $q$ 是质数）.
 
-元素 $a(X)$ 在 $R_q$ 中可逆当且仅当在多项式环 $\mathbb{Z}_q[X]$ 中，$\gcd(a(X), X^n + 1) = 1$。
-这是因为在商环 $\mathbb{Z}_q[X]/(f(X))$ 中，元素可逆的条件是与模多项式互质。
+元素 $a(X)$ 在 $R_q$ 中可逆当且仅当在多项式环 $\mathbb{Z}_q[X]$ 中,$\gcd(a(X), X^n + 1) = 1$.
+这是因为在商环 $\mathbb{Z}_q[X]/(f(X))$ 中,元素可逆的条件是与模多项式互质.
 
-设 $f(X) = X^n + 1 = X^{256} + 1$。
+设 $f(X) = X^n + 1 = X^{256} + 1$.
 
-$X^{512} - 1 = (X^{256} - 1)(X^{256} + 1)$，
-且 $X^{512} - 1 = \prod_{d \mid 512} \Phi_d(X)$，其中 $\Phi_d(X)$ 是分圆多项式。
+$X^{512} - 1 = (X^{256} - 1)(X^{256} + 1)$,
+且 $X^{512} - 1 = \prod_{d \mid 512} \Phi_d(X)$,其中 $\Phi_d(X)$ 是分圆多项式.
 
-$X^{256} + 1 = \Phi_{512}(X)$，因为 $512 = 2^9$ 是 $n \times 2 = 256 \times 2 = 512$。
+$X^{256} + 1 = \Phi_{512}(X)$,因为 $512 = 2^9$ 是 $n \times 2 = 256 \times 2 = 512$.
 
-$\Phi_{512}(X)$ 的次数为 $\phi(512) = 512 \times (1 - 1/2) = 256$，其中 $\phi$ 是欧拉函数。
+$\Phi_{512}(X)$ 的次数为 $\phi(512) = 512 \times (1 - 1/2) = 256$,其中 $\phi$ 是欧拉函数.
 
-在有限域 $\mathbb{Z}_q$ 上，分圆多项式 $\Phi_m(X)$ 的不可约因子次数等于 $q$ 模 $m$ 的乘法阶（当 $\gcd(q, m) = 1$ 时）。
+在有限域 $\mathbb{Z}_q$ 上,分圆多项式 $\Phi_m(X)$ 的不可约因子次数等于 $q$ 模 $m$ 的乘法阶（当 $\gcd(q, m) = 1$ 时）.
 
-这里 $m = 512$，$q = 3329$，且 $\gcd(q, 512) = 1$（因为 $q$ 是奇质数）。
+这里 $m = 512$,$q = 3329$,且 $\gcd(q, 512) = 1$（因为 $q$ 是奇质数）.
 
-计算 $q \mod 512$: $q = 3329 \equiv 257 \pmod{512}$（因为 $3329 - 6 \times 512 = 3329 - 3072 = 257$）。
+计算 $q \mod 512$: $q = 3329 \equiv 257 \pmod{512}$（因为 $3329 - 6 \times 512 = 3329 - 3072 = 257$）.
 
-计算 $q$ 模 512 的乘法阶：最小 $d$ 使得 $q^d \equiv 1 \pmod{512}$。
+计算 $q$ 模 512 的乘法阶：最小 $d$ 使得 $q^d \equiv 1 \pmod{512}$.
 
-$q \equiv 257 \equiv 1 + 2^8 \pmod{512}$。
+$q \equiv 257 \equiv 1 + 2^8 \pmod{512}$.
 
-$q^2 = 257^2 = 66049 \equiv 1 \pmod{512}$（因为 $512 \times 129 = 66048$，$66049 - 66048 = 1$）。
+$q^2 = 257^2 = 66049 \equiv 1 \pmod{512}$（因为 $512 \times 129 = 66048$,$66049 - 66048 = 1$）.
 
-$q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
+$q^1 = 257 \not\equiv 1 \pmod{512}$,故阶为 2.
 
-因此，$\Phi_{512}(X)$ 在 $\mathbb{Z}_q$ 上分解为 $\phi(512) / \text{ord}_q(512) = 256 / 2 = 128$ 个互异的不可约因子，每个因子次数为 2。
+因此,$\Phi_{512}(X)$ 在 $\mathbb{Z}_q$ 上分解为 $\phi(512) / \text{ord}_q(512) = 256 / 2 = 128$ 个互异的不可约因子,每个因子次数为 2.
 
-即 $f(X) = X^{256} + 1 = p_1(X) p_2(X) \cdots p_{128}(X)$，其中每个 $p_i(X)$ 是 $\mathbb{Z}_q$ 上的首一不可约二次多项式。
+即 $f(X) = X^{256} + 1 = p_1(X) p_2(X) \cdots p_{128}(X)$,其中每个 $p_i(X)$ 是 $\mathbb{Z}_q$ 上的首一不可约二次多项式.
 
-因此，概率为：
+因此,概率为：
 \begin{equation}
 	p = \left(1 - \frac{1}{q^2}\right)^{128}
 \end{equation}
 
-其中 $q = 3329$
+
+其中 $q = 3329$.
+
 
 % \subsubsection{具体实现步骤}
 
@@ -225,6 +231,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 \begin{equation}
 	p = \left(1 - \frac{1}{3329^2}\right)^{128}
 \end{equation}
+
 
 
 \section{RLWE和MLWE问题的求解}
@@ -239,7 +246,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 	(s_0,s_1,s_2,...s_{63})
 \end{align}
 
-同理，$b(x)$和$e(x)$也可以表示为:
+同理,$b(x)$和$e(x)$也可以表示为:
 
 \begin{align}
 	 & (b_0,b_1,b_2,...b_{63}) \\
@@ -333,11 +340,11 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 	(e_0,e_1,...e_{63},s_0,s_1,...s_{63},1)
 \end{align}
 
-对格进行格基约化，则约化后的第一行的[n,2n]项即为私密多项式，时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
+对格进行格基约化,则约化后的第一行的[n,2n]项即为私密多项式,时间复杂度为$n^6 (logB)^3$\cite{adleman1981}
 
-又或者使用Sieving求解SVP问题，在使用\textit{3-sieve (triple\_sieve)}时，
-时间复杂度为$2^{0.396n+o(n)}$，其中$n=2N+1$，$N$为RLWE问题的维度，对于$n=129$的问题，
-\textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}。
+又或者使用Sieving求解SVP问题,在使用\textit{3-sieve (triple\_sieve)}时,
+时间复杂度为$2^{0.396n+o(n)}$,其中$n=2N+1$,$N$为RLWE问题的维度,对于$n=129$的问题,
+\textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}.
 
 
 \section{解题结果}
@@ -362,7 +369,7 @@ e.norm=7.999999999999999
 
 \section{结论}
 
-总结论文的主要贡献和结论。
+总结论文的主要贡献和结论.
 
 \vspace{1em}
 
