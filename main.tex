@@ -8,11 +8,13 @@
 
 % 数学公式
 \usepackage{amsmath,amssymb,amsthm}
+\newtheorem{definition}{定义} % 创建新的定理类型，命名为“定义”
 
 % 图表支持
 \usepackage{graphicx}
 \usepackage{float}
-
+% \usepackage{amsmath} % 加载amsmath宏包以支持数学公式
+\usepackage{xeCJK} % 加载xeCJK宏包以支持中文
 % 其他必要包
 \usepackage{enumerate}
 \usepackage{titlesec}
@@ -110,7 +112,9 @@
 \vspace{1em}
 
 % 摘要部分
-\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 摘要：}{\songti\fontsize{12pt}{18pt}\selectfont 在此处输入摘要内容，约300~500字。应说明工作的目的、研究方法、结果和最终结论。要突出本论文的创造性成果或新的见解，语言力求精炼。为便于文献检索，应在本页下方另起一行注明本文的关键词（3~5个）。}
+\noindent{\heiti\fontsize{12pt}{18pt}\selectfont 摘要：}{\songti\fontsize{12pt}{18pt}\selectfont 
+在此处输入摘要内容，约300~500字。应说明工作的目的、研究方法、结果和最终结论。要突出本论文的创造性成果或新的见解，语言力求精炼。为便于文献检索，应在本页下方另起一行注明本文的关键词（3~5个）。
+}
 
 \vspace{1em}
 
@@ -123,18 +127,52 @@
 \vspace{1em}
 
 大规模量子计算机的潜在威胁对传统公钥密码学的安全性构成了根本性挑战。为应对此挑战，后量子密码学（Post-Quantum Cryptography, PQC）应运而生，其核心在于构建基于量子计算下困难数学问题的密码体制，旨在替代当前广泛依赖的传统公钥密码学，实现对称密钥封装、数字签名等核心功能。
-在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204 (Module-LWE-based Digital Signature - ML-DSA) 。
-其中，FIPS 203 (Crystals-Kyber) 与 FIPS 204 (Crystals-Dilithium) 标准均奠基于模格学习带错误问题 (Module Learning With Errors, MLWE)，分别用于密钥封装和数字签名。
-这些基于MLWE的NIST标准化方案的理论安全性，本质上依赖于其底层MLWE问题（及其变种如环LWE, RLWE）的计算困难性。对LWE问题家族计算复杂度的深入理解及其高效求解算法的研究构成了评估此类方案安全性的理论基础。值得注意的是，在具体的MLWE/RLWE实例中，秘密向量与错误向量（通常建模为多项式）的采样分布是决定问题实际求解难度的关键参数。
+在此背景下，美国国家标准与技术研究院（NIST）于2016年启动了全球性的后量子密码标准化进程。经过多轮严格的评估与筛选，NIST于2024年8月正式发布了首批后量子密码标准，即联邦信息处理标准（FIPS）203-111 (Module-LWE-based Key Encapsulation Mechanism - ML-KEM)、FIPS 204-121 (Module-LWE-based Digital Signature - ML-DSA) 和 FIPS 205 (Stateless Hash-Based Digital Signature - SLH-DSA)。
+其中，FIPS 203 (Crystals-Kyber) 与 FIPS 204 (Crystals-Dilithium) 标准均基于模格学习带错误问题 (Module Learning With Errors, MLWE)，分别用于密钥封装和数字签名。
+这些基于MLWE的NIST标准化方案的理论安全性，本质上依赖于其底层MLWE问题（及其变种如环LWE, RLWE）的计算困难性。对LWE问题家族计算复杂度的深入理解及其高效求解算法的研究构成了评估此类方案安全性的理论基础。
+
+本研究聚焦于对条件化RLWE及MLWE问题的若干关键变体进行深入密码分析。 我们的核心目标在于：
+评估标准化方案的安全性边界： 通过对这些精心设计问题的求解，分析NIST首批基于模格标准（特别是ML-KEM与ML-DSA）的理论鲁棒性，探寻潜在的理论或参数设定层面的脆弱点。
+提升格基攻击能力： 系统掌握并优化现有针对LWE问题的格基规约（Lattice Basis Reduction）与解码（Decoding）等求解算法。
+推动求解效率突破： 特别致力于提高针对（环）LWE问题的求解算法效率，缩小理论困难性与实际攻击能力之间的差距。
+促进全面的安全评估： 通过上述研究，为后量子密码体制，尤其是基于格的标准化方案，提供更坚实、更全面的安全性评估框架与方法论。
+% 值得注意的是，在具体的MLWE/RLWE实例中，秘密向量与错误向量（通常建模为多项式）的采样分布是决定问题实际求解难度的关键参数。
 
 
-在论文正文前，应简要阐述对赛题的分析、解题使用的主要方法和解题结果等内容。
-解题思路为将通过构造格将RLWE转化为CVP问题，
-再通过Kannan embedding将问题转化为SVP问题后使用Seiving求解。
+
+% 在论文正文前，应简要阐述对赛题的分析、解题使用的主要方法和解题结果等内容。
+% 解题思路为将通过构造格将RLWE转化为CVP问题，
+% 再通过Kannan embedding将问题转化为SVP问题后使用Seiving求解。
 
 % 正文开始
-\section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
 
+\section{前置知识及符号说明}
+$\mathbb{Z}$和$\mathbb{R}$分别表示整数环和实数域.
+对于奇素数$q$,令$\mathbb{Z}_q$表示模$q$的整数集，如$\mathbb{Z}_q = \mathbb{Z}\cap[-\frac{q}{2}，\frac{q}{2})$.
+对于两个向量$v =(v_1 , \ldots , v_d)$, $w = ( w_1 , \ldots , w_d) \in \mathbb{R}_d$,令$<v,w>$表示内积$ \sum_{i=1}^{d}= v_iw_i$.
+我们用$‖\mathbf{v}‖$表示定义为$‖\mathbf{v}‖=\sqrt{<\mathbf{v},\mathbf{v}>}$的欧氏范数, $\mathbf{A}^\top$表示矩阵$\mathbf{A}$转置.
+
+\begin{definition}[Search LWE]
+Fix a secret vector $\mathbf{s}$ in $\mathbb{Z}_q^n$.  
+The LWE distribution $A_{\mathbf{s},\chi}$ samples a pair  
+
+\[
+(\mathbf{a}, b) \in \mathbb{Z}_q^n \times \mathbb{Z}_q, \quad b = \langle \mathbf{a}, \mathbf{s} \rangle + e \mod q,
+\]  
+where $\mathbf{a}$ is uniformly chosen at random from $\mathbb{Z}_q^n$ and $e$ is sampled from the distribution $\chi$. Then the search LWE problem asks us to find the secret $\mathbf{s}$ given any independent samples from $A_{\mathbf{s},\chi}$.  
+\end{definition}
+
+\begin{definition}[Search Ring-LWE]
+Fix an element $s(x)$ in Rq that is called a “secret”. 
+The ring-based LWE distribution $A_{s,\chi}$ samples a pair
+
+\begin{align*}
+    (a(X), t(X)) \in R_q \times R_q, \quad t(X) = s(X)a(X) + e(X),
+\end{align*}
+where a(x) is uniformly chosen at random from the quotient ring Rq and $e(X)$ is sampled from the distribution $\chi$. Then the search ring-LWE problem asks us to find the secret $s(X)$ given any independent samples from $A_{s,\chi}$.
+\end{definition}
+
+\section[求解环R中主理想a(x)=Rq的概率]{求解环R中主理想$a(x)=R_q$的概率}
 \subsection{计算方法}
 
 给定环 $R_q = \mathbb{Z}_q[X]/(X^n + 1)$，其中 $n = 256$，$q = 3329$（$q$ 为质数）。需要计算在 $R_q$ 中均匀随机选取元素 $a(X)$ 时，主理想 $(a(X))$ 等于整个环 $R_q$ 的概率 $p$。
@@ -178,7 +216,7 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 	p = \left(1 - \frac{1}{q^2}\right)^{128}
 \end{equation}
 
-其中 $q = 3329$。
+其中 $q = 3329$
 
 % \subsubsection{具体实现步骤}
 
@@ -186,16 +224,16 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 
 \begin{equation}
 	p = \left(1 - \frac{1}{3329^2}\right)^{128}
-\end{equation}。
+\end{equation}
 
 
-\section{题目二}
+\section{RLWE和MLWE问题的求解}
 
-\subsection{题目(1)}
+\subsection{将RLWE问题转化为SVP求解}
 
-\subsubsection{解题思路}
+\subsubsection{从RLWE问题到CVP问题的转化}
 
-已知$b(x)=a(x)s(x)+e(x)$，则多项式$t(x)=s_0+s_1 \cdot x + s_2 \cdot x + \ldots + s_63 \cdot x^{63}$可以表示为向量:
+已知$b(x)=a(x)s(x)+e(x) \pmod p$，则多项式$t(x)=s_0+s_1 \cdot x + s_2 \cdot x + \ldots + s_{63} \cdot x^{63}$可以表示为向量:
 
 \begin{align}
 	(s_0,s_1,s_2,...s_{63})
@@ -269,8 +307,10 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 	(e_0,e_1,...e_{63},s_0,s_1,...s_{63})
 \end{align}
 
-这样问题就转换为格$\lambda$中的CVP问题.
-再通过Kannan 's embedding\supercite[]{kannan1987}，将问题转化为SVP:
+由于e和s都为选取比较短的多项式，$(e^*,s^*)$是较短向量,这样问题就转换为格$\lambda$中的CVP问题.
+
+\subsubsection{从CVP到SVP问题的转化}
+通过Kannan 's embedding\supercite[]{kannan1987}，可以将问题转化为SVP:
 
 \begin{align}
 	(k_0,k_1,...k_{63},s_0,s_1,...s_{63},1)
@@ -299,21 +339,6 @@ $q^1 = 257 \not\equiv 1 \pmod{512}$，故阶为 2。
 时间复杂度为$2^{0.396n+o(n)}$，其中$n=2N+1$，$N$为RLWE问题的维度，对于$n=129$的问题，
 \textit{total CPU time}约为\textit{33.2h}\cite{cryptoeprint:2019/089}。
 
-\subsection{题目(2)}
-
-\subsubsection{解题思路}
-
-\subsection{题目(3)}
-
-\subsection{题目(4)}
-
-\subsection{题目(5)}
-
-\subsection{题目(6)}
-
-\subsection{题目(7)}
-
-\subsection{题目(8)}
 
 \section{解题结果}
 
