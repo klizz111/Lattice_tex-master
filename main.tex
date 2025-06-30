@@ -242,7 +242,7 @@
 机器学习攻击以 SALSA 框架为代表 \cite{wenger2022salsa,stevens2024salsa,wengersalsa,li2023salsapicante}，通过训练 Transformer 模型从约简样本 $(\mathbf{A}, \mathbf{b})$ 中预测 $\mathbf{b}$ 并构建预言机，最终在维度 $n \leq 1024$ 下成功恢复稀疏二元/三元秘密 \cite{stevens2024salsa}。
 Cool\&Cruel 攻击 \cite{nolte2024cool} 则利用格基约简后矩阵的"悬崖现象"——前部列保持未约简状态（"Cruel"位），后部列显著缩小（"Cool"位），先通过暴力破解恢复Cruel位，再用贪心算法高效恢复Cool位。
 
-\subsection*{研究工作}
+\subsection*{本研究主要工作}
 具体研究工作涵盖：
 \begin{enumerate}
     \item 计算环$R_q$中均匀随机元素$a(X)$满足主理想$( a(X) )  = R_q$的概率；
@@ -921,27 +921,25 @@ p = \left(1 - \frac{1}{3329^2}\right)^{128}
 
 筛法作为另一类重要求解技术，自2001年AKS筛法\cite{10.1145/380752.380857}提出后持续演进。早期理论算法包括结构相异的MV筛法和列表筛法(ListSieve)\cite{doi:10.1137/1.9781611973075.119}，研究者随后发展出启发式版本如NV筛法\cite{NguyenVidick+2008+181+207}和高斯筛法(GaussSieve)\cite{doi:10.1137/1.9781611973075.119}。近十年来的优化突破主要体现在三个维度：(1)算法结构创新：包括基于NV筛法的层级筛法(Level Sieve)\cite{wang2011improved,zhang2013three}、基于列表筛法的元组筛法(Tuple Sieve)\cite{bai2016tuple}，以及线性筛法(Linear Sieve)\cite{mukhopadhyay2021faster}；(2)搜索加速技术：运用局部敏感哈希\cite{laarhoven2015sieving}、局部敏感过滤\cite{becker2016new}及量子Grover搜索\cite{laarhoven2013solving}优化遍历过程；(3)工程实践优化：涵盖渐进筛法\cite{laarhoven2018progressive}、子筛法\cite{ducas2018shortest}、基于秩约简的G6K框架\cite{albrecht2019general}，以及低存储需求的$k$-筛法\cite{chailloux2023classical}。特别值得关注的是，启发式算法中具有最优渐进复杂度的LDSieve\cite{becker2016new}代表了当前技术水平。作为BKZ的高效子程序\cite{xia2022improved}，现代筛法通过上述多维优化显著提升了格基密码分析能力。
 
-经过上述规约，问题被转化为$2n+1$维格上的最短向量问题（SVP）。典型参数配置为$n=64,96,128,256$，对应的格维度分别为$129,193,257,513$维。在$257$维和$513$维格上求解精确SVP具有显著计算难度——当前\texttt{SVPChallenge}记录显示，已求解的最高维度仅为$200$维（近似因子$1.05$）。为此，我们调用\texttt{SGAE}框架中的LLL、BKZ以及G6K算法进行SVP求解实验，具体结果如下所示。
+经过上述规约，问题被转化为$n'=2n+1$维格上的最短向量问题（SVP）。典型参数配置为$n=64,96,128,256$，对应的格维度分别为$129,193,257,513$维。在$257$维和$513$维格上求解精确SVP具有显著计算难度——当前\texttt{SVPChallenge}记录显示，已求解的最高维度仅为$200$维（近似因子$1.05$）。为此，我们调用\texttt{SGAE}框架中的LLL、BKZ以及G6K算法进行SVP求解实验，具体结果如下所示。
 
-
-\section{解题结果}
-
+% \section{解题结果}
 \begin{table}[htbp]
   \centering
   \caption{解题结果}
   \label{tab:svp-performance}
-  \begin{tabular}{|l|c|c|}
+  \begin{tabular}{|c|c|c|c|c|}
     \hline
-    题目 & $||\mathbf{e}||$ & $||\mathbf{s}||$ \\
+    题目 & $n$ &$n'$&$||\mathbf{e}||$ & $||\mathbf{s}||$ \\
     \hline
-    2.1 & 8.54 & 7.99 \\
-    2.2 & 16.97 & 14.21 \\
-    2.3 & 9.38 & 9.27 \\
-    2.4 & 11.91 & 14.00 \\
-    2.5 & 9.32 & 12.60 \\
-    2.6 & 13.71 & 4.00 \\
-    2.7 & 10.58 & 4.00 \\
-    2.8 & - & - \\
+    2.1 &$64$ & $129$& $8.54$ & $7.99$ \\
+    2.2 &$64$ & $129$& $16.97$ & $14.21$ \\
+    2.3 &$96$ & $193$& $9.38$ & $9.27$ \\
+    2.4 &$128$& $257$& $11.91$ & $14.00$ \\
+    2.5 &$128$& $257$& $9.32$ & $12.60$ \\
+    2.6 &$256$& $513$& $13.71$ & $4.00$ \\
+    2.7 &$256$& $513$& $10.58$ & $4.00$ \\
+    2.8 &$256$& $513$& - & - \\
     \hline
   \end{tabular}
 \end{table}
@@ -960,12 +958,12 @@ p = \left(1 - \frac{1}{3329^2}\right)^{128}
 
 % 尽管取得进展,未来工作包括探索更高维RLWE求解、不同参数分布的影响、针对MLWE的专门算法以及量子算法对格基问题求解的潜在加速效果分析。
 
-总之,本研究在RLWE问题求解和后量子密码安全性评估方面取得了实质性进展,所建立的理论框架、求解方法和实验结果,为相关研究者和工程师提供了有价值的理论基础和实用工具,对推动领域发展具有重要意义。
+总而言之,本研究在RLWE问题求解和后量子密码安全性评估方面取得了实质性进展,所建立的理论框架、求解方法和实验结果,为相关研究者和工程师提供了有价值的理论基础和实用工具,对推动领域发展具有重要意义。
 
 \hspace*{\fill}
 
 % 附录
-{\centering\heiti\fontsize{14pt}{21pt}\selectfont 附录1. 解题结果\par}
+{\centering\heiti\fontsize{14pt}{21pt}\selectfont 附录I \; 解题结果\par}
 \vspace{1em}
 
 \subsection{题目(2.1)}
@@ -1043,9 +1041,12 @@ e=[4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 e.norm=4.00000000000000
 
-{\centering\heiti\fontsize{14pt}{21pt}\selectfont 附录2\par}
+\hspace*{\fill}
+
+{\centering\heiti\fontsize{14pt}{21pt}\selectfont 附录II \; \par}
 \vspace{1em}
-\section{}
+\setcounter{subsection}{0}
+\renewcommand{\thesubsection}{\arabic{subsection}}
 \subsection{代码}
 
 % 代码块
